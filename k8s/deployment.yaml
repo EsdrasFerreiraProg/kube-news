@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: esdrasferreiraprog/kube-news:v1
+          image: esdrasferreiraprog/kube-news:{{TAG}}
           ports:
           - containerPort: 5432
           env:
@@ -75,6 +75,5 @@ spec:
   ports:
     - port: 80
       targetPort: 8080
-      nodePort: 30000
-  type: NodePort
+  type: LoadBalancer
 
