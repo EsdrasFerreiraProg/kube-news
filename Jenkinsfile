@@ -1,36 +1,39 @@
-pipeline{
+pipeline {
     agent any
 
-    stages{
-        stage('Build Docker Image'){
-            steps{
-                script{
+    stages {
+
+        stage ('Build Docker Image') {
+            steps {
+                script {
                     dockerapp = docker.build("esdrasferreiraprog/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
         }
-        stage('Push Docker Image'){
-            steps{
-                script{
-                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub'){
+
+        stage ('Push Docker Image') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
                         dockerapp.push('latest')
                         dockerapp.push("${env.BUILD_ID}")
                     }
                 }
             }
         }
-        stage('Deploy kubernetes'){
+
+
+        stage ('Deploy Kubernetes') {
             environment {
-                tag_version = "$S{env.BUILD_ID}"
+                tag_version = "${env.BUILD_ID}"
             }
-            steps{
-                withKubeConfig([credentialsId: 'kubeconfig']){
-                    sh 'sed -i s/{{TAG}}/$tag_version/g ./k8s/deployment.yaml'
+            steps {
+                withKubeConfig ([credentialsId: 'kubeconfig']) {
+                    sh 'sed -i "s/{{TAG}}/$tag_version/g" ./k8s/deployment.yaml'
                     sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
             }
         }
-
-        
     }
+
 }
