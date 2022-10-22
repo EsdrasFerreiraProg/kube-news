@@ -54,7 +54,7 @@ spec:
         - name: web
           image: esdrasferreiraprog/kube-news:{{TAG}}
           ports:
-          - containerPort: 5432
+          - containerPort: 8080
           env:
           - name: DB_DATABASE
             value: "kubenews"
