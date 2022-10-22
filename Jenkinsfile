@@ -24,7 +24,7 @@ pipeline {
         }
 
 
-        stage ('Deploy Kubernetes') {
+        /*stage ('Deploy Kubernetes') {
             environment {
                 tag_version = "${env.BUILD_ID}"
             }
@@ -34,7 +34,7 @@ pipeline {
                     sh 'kubectl apply -f ./k8s/deployment.yaml'
                 }
             }
-        }
+        }*/
     }
 
 }
