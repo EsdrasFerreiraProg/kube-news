@@ -9,7 +9,7 @@ pipeline {
                     dockerapp = docker.build("esdrasferreiraprog/kube-news:${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                 }
             }
-            echo 'passou o build'
+            
         }
 
         stage ('Push Docker Image') {
@@ -20,7 +20,6 @@ pipeline {
                         dockerapp.push("${env.BUILD_ID}")
                     }
                 }
-                echo 'passou o push'
             }
         }
 
